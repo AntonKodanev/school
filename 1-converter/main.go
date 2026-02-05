@@ -58,43 +58,37 @@ func userValueCurrency() (float64, string, string) {
 	return quantity, convertFrom, convertTo
 }
 
-func convertMoney(q float64, cf string, ct string) float64 {
+func convertMoney(q float64, cf string, ct string) {
 	const usdToEur = 0.84
 	const usdToRub = 77.02
 	const eurToRub = usdToRub / usdToEur
 	const rubToUsd = 1 / usdToRub
-	const rubToEur = 1 / usdToEur
+	const rubToEur = 1 / eurToRub
 	const eurToUsd = 1 / usdToEur
 	switch cf {
 	case "rub":
 		if ct == "usd" {
 			result := q * rubToUsd
 			fmt.Printf("При конвертации вы получите: %f usd", result)
-			return result
 		} else {
 			result := q * rubToEur
 			fmt.Printf("При конвертации вы получите: %f eur", result)
-			return result
 		}
 	case "usd":
 		if ct == "rub" {
 			result := q * usdToRub
 			fmt.Printf("При конвертации вы получите: %f rub", result)
-			return result
 		} else {
 			result := q * usdToEur
 			fmt.Printf("При конвертации вы получите: %f eur", result)
-			return result
 		}
 	default:
 		if ct == "usd" {
 			result := q * eurToUsd
 			fmt.Printf("При конвертации вы получите: %f usd", result)
-			return result
 		} else {
 			result := q * eurToRub
 			fmt.Printf("При конвертации вы получите: %f rub", result)
-			return result
 		}
 	}
 }
