@@ -65,30 +65,18 @@ func convertMoney(q float64, cf string, ct string) {
 	const rubToUsd = 1 / usdToRub
 	const rubToEur = 1 / eurToRub
 	const eurToUsd = 1 / usdToEur
-	switch cf {
-	case "rub":
-		if ct == "usd" {
-			result := q * rubToUsd
-			fmt.Printf("При конвертации вы получите: %f usd", result)
-		} else {
-			result := q * rubToEur
-			fmt.Printf("При конвертации вы получите: %f eur", result)
-		}
-	case "usd":
-		if ct == "rub" {
-			result := q * usdToRub
-			fmt.Printf("При конвертации вы получите: %f rub", result)
-		} else {
-			result := q * usdToEur
-			fmt.Printf("При конвертации вы получите: %f eur", result)
-		}
-	default:
-		if ct == "usd" {
-			result := q * eurToUsd
-			fmt.Printf("При конвертации вы получите: %f usd", result)
-		} else {
-			result := q * eurToRub
-			fmt.Printf("При конвертации вы получите: %f rub", result)
+
+	type Money = map[string]map[string]float64
+	userMoney := Money{"usd": {"eur": usdToEur, "rub": usdToRub}, "eur": {"rub": eurToRub, "usd": eurToUsd}, "rub": {"usd": rubToUsd, "eur": rubToEur}}
+
+	for k, v := range userMoney {
+		if k == cf {
+			for u, p := range v {
+				if ct == u {
+					result := q * p
+					fmt.Printf("При конвертации вы получите: %f %v", result, u)
+				}
+			}
 		}
 	}
 }
