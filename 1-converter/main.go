@@ -69,15 +69,18 @@ func userValueCurrency() (float64, string, string) {
 }
 
 func convertMoney(m *Money, q float64, cf string, ct string) {
-
-	for k, v := range *m {
-		if k == cf {
-			for u, p := range v {
-				if ct == u {
-					result := q * p
-					fmt.Printf("При конвертации вы получите: %f %v", result, u)
-				}
-			}
-		}
+	fromRates, ok := (*m)[cf]
+	if !ok {
+		fmt.Println("Нет курсов для валюты отправления")
+		return
 	}
+
+	rate, ok := fromRates[ct]
+	if !ok {
+		fmt.Println("Нет курса для пары конвертации")
+		return
+	}
+
+	result := q * rate
+	fmt.Printf("При конвертации вы получите: %f %v", result, ct)
 }
