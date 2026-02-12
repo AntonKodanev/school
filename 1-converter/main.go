@@ -2,9 +2,19 @@ package main
 
 import "fmt"
 
+const usdToEur = 0.84
+const usdToRub = 77.02
+const eurToRub = usdToRub / usdToEur
+const rubToUsd = 1 / usdToRub
+const rubToEur = 1 / eurToRub
+const eurToUsd = 1 / usdToEur
+
+type Money = map[string]map[string]float64
+
 func main() {
+	userMoney := Money{"usd": {"eur": usdToEur, "rub": usdToRub}, "eur": {"rub": eurToRub, "usd": eurToUsd}, "rub": {"usd": rubToUsd, "eur": rubToEur}}
 	convertFrom, quantity, convertTo := userValueCurrency()
-	convertMoney(convertFrom, quantity, convertTo)
+	convertMoney(&userMoney, convertFrom, quantity, convertTo)
 }
 
 func userValueCurrency() (float64, string, string) {
@@ -58,18 +68,9 @@ func userValueCurrency() (float64, string, string) {
 	return quantity, convertFrom, convertTo
 }
 
-func convertMoney(q float64, cf string, ct string) {
-	const usdToEur = 0.84
-	const usdToRub = 77.02
-	const eurToRub = usdToRub / usdToEur
-	const rubToUsd = 1 / usdToRub
-	const rubToEur = 1 / eurToRub
-	const eurToUsd = 1 / usdToEur
+func convertMoney(m *Money, q float64, cf string, ct string) {
 
-	type Money = map[string]map[string]float64
-	userMoney := Money{"usd": {"eur": usdToEur, "rub": usdToRub}, "eur": {"rub": eurToRub, "usd": eurToUsd}, "rub": {"usd": rubToUsd, "eur": rubToEur}}
-
-	for k, v := range userMoney {
+	for k, v := range *m {
 		if k == cf {
 			for u, p := range v {
 				if ct == u {
