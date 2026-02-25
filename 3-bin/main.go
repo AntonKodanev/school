@@ -1,40 +1,13 @@
 package main
 
 import (
+	"demo/bin/bins"
 	"fmt"
-	"time"
 )
 
-type Bin struct {
-	Id       string
-	Private  bool
-	CreateAt time.Time
-	Name     string
-}
-
-type BinList struct {
-	Bins []Bin
-}
-
-func newBin(id string, private bool, name string) *Bin {
-	return &Bin{
-		Id:       id,
-		Private:  private,
-		CreateAt: time.Now(),
-		Name:     name,
-	}
-
-}
-
-func NewBinList() *BinList {
-	return &BinList{
-		Bins: []Bin{},
-	}
-}
-
 func main() {
-	bin := newBin("1", true, "test")
+	bin := bins.NewBin("1", true, "test")
 	fmt.Println(bin)
-	binList := NewBinList()
+	binList := bins.NewBinList()
 	fmt.Println(binList)
 }
